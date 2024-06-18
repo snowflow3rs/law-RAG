@@ -64,7 +64,7 @@ export default function BlogPostList() {
         header: "Actions",
         cell: function render({ getValue }) {
           return (
-            <div
+            <div 
               style={{
                 display: "flex",
                 flexDirection: "row",
@@ -133,7 +133,7 @@ export default function BlogPostList() {
   }));
 
   return (
-    <div style={{ padding: "16px" }}>
+    <div className="p-[16px]   ">
       <div
         style={{
           display: "flex",

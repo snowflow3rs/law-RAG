@@ -8,18 +8,18 @@ export const Menu = () => {
 
   return (
     <nav className="menu">
-      <ul>
+      <div>
         {menuItems.map((item) => (
-          <li key={item.key}>
+          <div key={item.key}>
             <Link
               href={item.route ?? "/"}
               className={selectedKey === item.key ? "active" : ""}
             >
               {item.label}
             </Link>
-          </li>
+          </div>
         ))}
-      </ul>
+      </div>
     </nav>
   );
 };

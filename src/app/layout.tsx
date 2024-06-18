@@ -21,15 +21,19 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
+
+
   return (
     <html lang="en">
       <body>
         <Suspense>
-          <GitHubBanner />
+          
           <RefineKbarProvider>
-            <DevtoolsProvider>
+            
               <Refine
                 routerProvider={routerProvider}
+                
                 dataProvider={dataProvider}
                 resources={[
                   {
@@ -41,6 +45,15 @@ export default function RootLayout({
                     meta: {
                       canDelete: true,
                     },
+                  },
+                  {
+                  
+                    name: "upload",
+                    list: "/upload",
+                    // create: "/blog-posts/create",
+                    // edit: "/blog-posts/edit/:id",
+                    // show: "/blog-posts/show/:id",
+                   
                   },
                   {
                     name: "categories",
@@ -63,7 +76,7 @@ export default function RootLayout({
                 {children}
                 <RefineKbar />
               </Refine>
-            </DevtoolsProvider>
+            
           </RefineKbarProvider>
         </Suspense>
       </body>

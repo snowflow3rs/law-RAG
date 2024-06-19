@@ -29,3 +29,10 @@ export const dataChunking: dataChunkingType[] = [
     }
 
 ]
+
+
+// Character Chunking
+// Recursive Character Chunking
+// Document Specific Chunking
+// Semantic Chunking
+// Agent Chunking

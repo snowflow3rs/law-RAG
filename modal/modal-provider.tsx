@@ -1,8 +1,10 @@
 import InforModal from '@components/infor-modal';
+import UploadFile from '@components/upload/upload-file';
 import React, { useEffect, useState } from 'react'
 
 const ModalProvider = () => {
-    const [isMounted, setMounted] = useState(false);
+    const [isMounted, setMounted] = useState<boolean>(false);
+
     useEffect(() => {
         setMounted(true);
     }, []);
@@ -12,7 +14,7 @@ const ModalProvider = () => {
     return (
         <div>
 
-            <InforModal />
+            <UploadFile />
 
 
         </div>

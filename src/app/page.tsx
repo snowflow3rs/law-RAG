@@ -10,6 +10,7 @@ export default function IndexPage() {
     <Suspense>
       <Authenticated key="home-page">
         <NavigateToResource />
+        
       </Authenticated>
     </Suspense>
   );

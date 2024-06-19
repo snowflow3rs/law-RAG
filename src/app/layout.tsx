@@ -7,6 +7,7 @@ import React, { Suspense } from "react";
 
 import { dataProvider } from "@providers/data-provider";
 import "@styles/global.css";
+import { ToastProvider } from "../../modal/toast-provider";
 
 export const metadata: Metadata = {
   title: "Refine",
@@ -28,56 +29,39 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <Suspense>
-          
           <RefineKbarProvider>
-            
-              <Refine
-                routerProvider={routerProvider}
-                
-                dataProvider={dataProvider}
-                resources={[
-                  {
-                    name: "blog_posts",
-                    list: "/blog-posts",
-                    create: "/blog-posts/create",
-                    edit: "/blog-posts/edit/:id",
-                    show: "/blog-posts/show/:id",
-                    meta: {
-                      canDelete: true,
-                    },
-                  },
-                  {
-                  
-                    name: "upload",
-                    list: "/upload",
-                    // create: "/blog-posts/create",
-                    // edit: "/blog-posts/edit/:id",
-                    // show: "/blog-posts/show/:id",
-                   
-                  },
-                  {
-                    name: "categories",
-                    list: "/categories",
-                    create: "/categories/create",
-                    edit: "/categories/edit/:id",
-                    show: "/categories/show/:id",
-                    meta: {
-                      canDelete: true,
-                    },
-                  },
-                ]}
-                options={{
-                  syncWithLocation: true,
-                  warnWhenUnsavedChanges: true,
-                  useNewQueryKeys: true,
-                  projectId: "P2qOqG-wcVM3a-G258Rb",
-                }}
-              >
-                {children}
-                <RefineKbar />
-              </Refine>
-            
+            <Refine
+              routerProvider={routerProvider}
+
+              dataProvider={dataProvider}
+              resources={[
+             {
+
+                  name: "upload",
+                  list: "/upload",
+                  // create: "/blog-posts/create",
+                  // edit: "/blog-posts/edit/:id",
+                  // show: "/blog-posts/show/:id",
+
+                },
+               
+              ]}
+              options={{
+                syncWithLocation: true,
+                warnWhenUnsavedChanges: true,
+                useNewQueryKeys: true,
+                projectId: "P2qOqG-wcVM3a-G258Rb",
+              }}
+            >
+
+              <ToastProvider />
+              {children}
+
+              <RefineKbar />
+            </Refine>
+
           </RefineKbarProvider>
+
         </Suspense>
       </body>
     </html>

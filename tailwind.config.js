@@ -7,7 +7,16 @@ module.exports = {
     "./src/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        'main-grey': '#edede9',
+        'main-pink': '#ffd6ff',
+      },
+      fontFamily: {
+        wild: ['Kdam Thmor Pro']
+      },
+    },
   },
+  
   plugins: [],
 };

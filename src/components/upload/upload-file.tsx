@@ -75,7 +75,6 @@ const UploadFile: React.FC = () => {
     try {
 
 
-
       const base64Files = [];
       const { uploadthing } = values;
       for (const file of uploadthing) {
@@ -90,31 +89,51 @@ const UploadFile: React.FC = () => {
           base64Files.push(file);
         }
       }
-      const data = {
-        ...values,
-        selectedOption,
-        text: text,
-        file: base64Files,
-        valueChunkSize: valueChunkSize,
-        valueChunkOverlap: valueChunkOverlap
-      }
-      console.log(data)
+      // const data = {
+      //   ...values,
+      //   selectedOption,
+      //   text: text,
+      //   file: base64Files,
+      //   valueChunkSize: valueChunkSize,
+      //   valueChunkOverlap: valueChunkOverlap
+      // }
+      // console.log(data)
+//  const data ={
+//   uploadthing:base64Files,
+//     selected_optio:selectedOption,
+//     chunk_overlap:valueChunkOverlap,
+//     chunk_size:valueChunkSize
 
-
+//  }
+//  console.log(data)
       // CALLL API
       // const res = await fetch("http://localhost:5000/chunk", {
 
       //     method: "POST",
-      //     body: data
+      //   body:data
       //   })
       //   console.log(res)
 
-      const res = await axios.post("http://localhost:5000/chunk", {
-       
-       
-       data,
+      const res = await fetch("http://localhost:5000/chunk", {
+        method: "POST",
+        headers: {
+          'content-type': 'application/json'
+        },
+        body: JSON.stringify({'file':base64Files,
+                              'selected_option':selectedOption,
+                              'chunk_overlap':100,
+                              'chunk_size':500
+        })
       })
 
+const data = await res.json();
+if (data.error) {
+  alert(data.error);
+} else {
+  console.log(data.chunks)
+}
+      // const data = await res.json();
+        
       toast.success("Chunking Successfully")
     } catch (error: any) {
       console.log("Fail to upload file", error)
@@ -128,7 +147,7 @@ const UploadFile: React.FC = () => {
 
   return (
     <div className=" flex flex-col   w-full ml-4     ">
-      <Create  title={<p className=" font-mono font-light">Enter your file...</p>} goBack={null} 
+      <Create saveButtonProps={saveButtonProps} title={<p className=" font-mono font-light">Enter your file...</p>} goBack={null} 
       // footerButtons={({ }) => (
 
       //   <div className=" w-[420px] ">
@@ -142,7 +161,7 @@ const UploadFile: React.FC = () => {
 
 
 
-          <div className="flex items-center justify-center w-full">
+          {/* <div className="flex items-center justify-center w-full">
             <label htmlFor="dropzone-file" className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
               <div className="flex flex-col items-center justify-center pt-5 pb-6">
                 <svg className="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
@@ -153,9 +172,9 @@ const UploadFile: React.FC = () => {
               </div>
               <input id="dropzone-file" accept=".pdf,.docx" type="file" className=" hidden" onChange={handleFileUpload} />
             </label>
-          </div>
+          </div> */}
 
-          {/* <Form.Item
+          <Form.Item
             name="uploadthing"
             valuePropName="fileList"
             getValueFromEvent={getValueFromEvent}
@@ -173,10 +192,10 @@ const UploadFile: React.FC = () => {
             >
               <p className="ant-upload-text">Drag & drop a file in this area</p>
             </Upload.Dragger>
-          </Form.Item> */}
+          </Form.Item>
           <Form.Item label="Text" className="mt-3">
 
-            <textarea value={text} className="  w-full border border-gray-300" onChange={handleTextChange} rows={10} cols={50} />
+            
           </Form.Item>
           <Form.Item label="Select Option" required>
             <Select

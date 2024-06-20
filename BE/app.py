@@ -3,7 +3,7 @@ import base64
 import tempfile
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-from chunking.chunker import CharacterChunking, RecursiveCharacterChunking, DocumentSpecificChunkingMarkdown, DocumentSpecificChunkingPython
+from chunking.chunker import CharacterChunking, RecursiveCharacterChunking, DocumentSpecificChunkingMarkdown, DocumentSpecificChunkingPython, DocumentSpecificChunkingJS
 import fitz
 from werkzeug.utils import secure_filename
 from docx import Document
@@ -60,10 +60,12 @@ def chunk_endpoint():
         return CharacterChunking(text, chunk_size, chunk_overlap)
     elif selected_option == "Recursion Character Chunking":
         return RecursiveCharacterChunking(text, chunk_size, chunk_overlap)
-    elif selected_option == "Document Specific Chunking Markdown":
-        return DocumentSpecificChunkingMarkdown(text, chunk_size)
-    elif selected_option == "Document Specific Chunking Python":
-        return DocumentSpecificChunkingPython(text, chunk_size)
+    elif selected_option == "Document Specific Chunking - Markdown":
+        return DocumentSpecificChunkingMarkdown(text, chunk_size, chunk_overlap)
+    elif selected_option == "Document Specific Chunking - Python":
+        return DocumentSpecificChunkingPython(text, chunk_size, chunk_overlap)
+    elif selected_option == "Document Specific Chunking - JS":
+        return DocumentSpecificChunkingJS(text, chunk_size, chunk_overlap)
     else:
         return jsonify({"chunks":[]})
 

@@ -1,6 +1,6 @@
 from flask import request, jsonify
 from langchain_text_splitters import CharacterTextSplitter, RecursiveCharacterTextSplitter, MarkdownTextSplitter
-from langchain_text_splitters import PythonCodeTextSplitter
+from langchain_text_splitters import PythonCodeTextSplitter, RecursiveCharacterTextSplitter, Language
 # from unstructured.partition.pdf import partition_pdf
 # from unstructured.staging.base import elements_to_json
 
@@ -36,7 +36,6 @@ def RecursiveCharacterChunking(text, chunk_size, chunk_overlap):
     text_splitter = RecursiveCharacterTextSplitter(chunk_size=chunk_size,
                                                    chunk_overlap=chunk_overlap)
     texts = text_splitter.create_documents([text])
-    string_texts = [texts[i].page_content for i in range(len(texts))]
     for i in range(len(texts)):
         chunks.append({'text':texts[i].page_content,
                        'type':'text',
@@ -49,17 +48,16 @@ def DocumentSpecificChunkingMarkdown(text, chunk_size):
     chunks = []
     splitter = MarkdownTextSplitter(chunk_size=chunk_size, chunk_overlap=0)
     texts = splitter.create_documents([text])
-    string_texts = [texts[i].page_content for i in range(len(texts))]
     for i in range(len(texts)):
         chunks.append({'text':texts[i].page_content,
                     'type':'text',
                     'id':i})
     return jsonify({'chunks': chunks})
 
-def DocumentSpecificChunkingPython(text, chunk_size):
+def DocumentSpecificChunkingPython(text, chunk_size, chunk_overlap):
     # Python chunking
     chunks = []
-    splitter = PythonCodeTextSplitter(chunk_size=100, chunk_overlap=0)
+    splitter = PythonCodeTextSplitter(chunk_size=chunk_size, chunk_overlap=chunk_overlap)
     texts = splitter.create_documents([text])
     for i in range(len(texts)):
         chunks.append({'text':texts[i].page_content,
@@ -67,7 +65,21 @@ def DocumentSpecificChunkingPython(text, chunk_size):
                        'id':i})
     return jsonify({'chunks': chunks})
 
-# def DocumentSpecificChunkingPDF(filename):
+def DocumentSpecificChunkingJS(text, chunk_size, chunk_overlap):
+    # Python chunking
+    chunks = []
+    splitter = RecursiveCharacterTextSplitter.from_language(
+        language=Language.JS, chunk_size=chunk_size, chunk_overlap=chunk_overlap
+    )
+    texts = splitter.create_documents([text])
+    for i in range(len(texts)):
+        chunks.append({'text':texts[i].page_content,
+                       'type':'text',
+                       'id':i})
+    return jsonify({'chunks': chunks})
+
+def DocumentSpecificChunkingPDF(filename):
+    return jsonify({'chunks': "Not implementations"})
 #     elements = partition_pdf(
 #         filename=filename,
         

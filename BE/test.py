@@ -1,6 +1,8 @@
 from unstructured.partition.pdf import partition_pdf
 from unstructured.staging.base import elements_to_json
+import pytesseract
 
+pytesseract.pytesseract.tesseract_cmd = r'tesseract-ocr-w64-setup-5.4.0.20240606.exe'
 elements = partition_pdf(
     filename="finance_report.pdf",
     # Unstructured Helpers
@@ -16,4 +18,4 @@ elements = partition_pdf(
 
 # elements = partition_pdf("example-docs/layout-parser-paper-fast.pdf")
 # elements_fast = partition_pdf("example-docs/layout-parser-paper-fast.pdf", strategy="fast")
-print(elements)
+print("hi")

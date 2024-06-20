@@ -121,17 +121,17 @@ const UploadFile: React.FC = () => {
         },
         body: JSON.stringify({'file':base64Files,
                               'selected_option':selectedOption,
-                              'chunk_overlap':100,
-                              'chunk_size':500
+                              'chunk_overlap':valueChunkOverlap,
+                              'chunk_size':valueChunkSize
         })
       })
 
-const data = await res.json();
-if (data.error) {
-  alert(data.error);
-} else {
-  console.log(data.chunks)
-}
+      const data = await res.json();
+      if (data.error) {
+        alert(data.error);
+      } else {
+        console.log(data.chunks)
+      }
       // const data = await res.json();
         
       toast.success("Chunking Successfully")

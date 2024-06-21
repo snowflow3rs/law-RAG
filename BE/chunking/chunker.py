@@ -1,8 +1,8 @@
 from flask import request, jsonify
 from langchain_text_splitters import CharacterTextSplitter, RecursiveCharacterTextSplitter, MarkdownTextSplitter
 from langchain_text_splitters import PythonCodeTextSplitter, RecursiveCharacterTextSplitter, Language
-# from unstructured.partition.pdf import partition_pdf
-# from unstructured.staging.base import elements_to_json
+from unstructured.partition.pdf import partition_pdf
+from unstructured.staging.base import elements_to_json
 
 def CharacterChunking(text,chunk_size, chunk_overlap):
     """Character Splitting
@@ -79,16 +79,12 @@ def DocumentSpecificChunkingJS(text, chunk_size, chunk_overlap):
     return jsonify({'chunks': chunks})
 
 def DocumentSpecificChunkingPDF(filename):
-    return jsonify({'chunks': "Not implementations"})
-#     elements = partition_pdf(
-#         filename=filename,
-        
-#         # Unstructured Helpers
-#         strategy="hi_res",
-#         infer_table_structure=True,
-#         model_name="yolox"
-#     )
-#     return 
+    elements = partition_pdf(filename, strategy="hi_res", model = "yolox",
+                         infer_table_structure=True,
+                         extract_image_block_types=["Image", "Table"],
+                         languages=['vi'])
+    elements = [e.to_dict() for e in elements]
+    return jsonify({'chunks': elements})
 
 def SemanticChunking(text):
     return jsonify({'chunks': "Not implementations"})

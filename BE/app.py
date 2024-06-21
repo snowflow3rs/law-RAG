@@ -3,7 +3,8 @@ import base64
 import tempfile
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-from chunking.chunker import CharacterChunking, RecursiveCharacterChunking, DocumentSpecificChunkingMarkdown, DocumentSpecificChunkingPython, DocumentSpecificChunkingJS
+from chunking.chunker import CharacterChunking, RecursiveCharacterChunking, DocumentSpecificChunkingMarkdown, \
+                            DocumentSpecificChunkingPython, DocumentSpecificChunkingJS, DocumentSpecificChunkingPDF
 import fitz
 from werkzeug.utils import secure_filename
 from docx import Document
@@ -52,9 +53,8 @@ def chunk_endpoint():
         text = read_docx(temp_file_path)
     else:
         return jsonify({'error': 'Unsupported file type'}), 400
-    
-    # os.remove(temp_file_path)
-    # print(text[:100])
+
+
     print(selected_option)
     if selected_option == "Character Chunking":
         return CharacterChunking(text, chunk_size, chunk_overlap)
@@ -66,8 +66,12 @@ def chunk_endpoint():
         return DocumentSpecificChunkingPython(text, chunk_size, chunk_overlap)
     elif selected_option == "Document Specific Chunking - JS":
         return DocumentSpecificChunkingJS(text, chunk_size, chunk_overlap)
+    elif selected_option == "Document Specific Chunking":
+        return DocumentSpecificChunkingPDF(temp_file_path)
     else:
         return jsonify({"chunks":[]})
+
+    os.remove(temp_file_path)
 
 if __name__=="__main__": 
     app.run(debug=True)

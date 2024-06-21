@@ -49,6 +49,28 @@ Y Combinator encourages founders to focus on growth rate rather than absolute nu
 YC doesn't explicitly tell founders that with growth rate "you get out what you put in," but it's not far from the truth. And if growth rate were proportional to performance, then the reward for performance p over time t would be proportional to pt.
 
 Even after decades of thinking about this, I find that sentence startling.`
+
+export const specificData = [
+
+    {
+
+        name: "Document Specific Chunking - Markdown",
+        method: "Document Specific Chunking",
+    },
+
+    {
+
+        name: "Document Specific Chunking - Python",
+        method: "Document Specific Chunking",
+    },
+    {
+
+        name: "Document Specific Chunking - JS",
+        method: "Document Specific Chunking",
+    },
+]
+
+
 // Character Chunking
 // Recursive Character Chunking
 // Document Specific Chunking

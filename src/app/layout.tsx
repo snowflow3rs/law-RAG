@@ -8,6 +8,7 @@ import React, { Suspense } from "react";
 import { dataProvider } from "@providers/data-provider";
 import "@styles/global.css";
 import { ToastProvider } from "../../modal/toast-provider";
+import ScrollToTopBtn from "@components/scroll-top-btn";
 
 export const metadata: Metadata = {
   title: "Refine",
@@ -56,7 +57,7 @@ export default function RootLayout({
 
               <ToastProvider />
               {children}
-
+                <ScrollToTopBtn/>
               <RefineKbar />
             </Refine>
 

@@ -1,5 +1,8 @@
 
 "use client"
+import { useState } from "react";
+
+import axios from "axios";
 import {
   Create,
   useForm,
@@ -14,26 +17,23 @@ import {
 
 } from "@refinedev/core";
 import { toast } from 'react-hot-toast';
-import { dataChunking } from "../../../constant/constant";
-import { useCallback, useState } from "react";
-import { useModal } from "@refinedev/antd";
-import axios from "axios";
+import { dataChunking, specificData } from "../../../constant/constant";
 
 
-export interface UploadFileProps {
+interface UploadFormProps{
 
-  text: string,
-  setText: React.Dispatch<React.SetStateAction<string>>
+  handleDataFromChild?:any
 }
 
-const UploadFile: React.FC = () => {
+const UploadForm:React.FC<UploadFormProps> = ({handleDataFromChild}) => {
   const [text, setText] = useState("");
   const [valueChunkSize, setValueChunkSize] = useState<number>(1);
   const [valueChunkOverlap, setValueChunkOverlap] = useState<number>(1);
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
+  const [selectedSpecific, setSelectedSpecific] = useState<string | null>(null);
   const { formProps, saveButtonProps, onFinish } = useForm();
-  const [file, setFile] = useState<File | undefined>();
-
+  const[file,setFile]=useState<File>()
+  const [loading, setLoading] = useState(false);
 
   const MAX_TEXT_LENGTH = 100000;
 
@@ -73,7 +73,7 @@ const UploadFile: React.FC = () => {
   //handle submit
   const handleOnFinish = async (values: any) => {
     try {
-
+      setLoading(true)
 
       const base64Files = [];
       const { uploadthing } = values;
@@ -89,91 +89,76 @@ const UploadFile: React.FC = () => {
           base64Files.push(file);
         }
       }
-      // const data = {
-      //   ...values,
-      //   selectedOption,
-      //   text: text,
-      //   file: base64Files,
-      //   valueChunkSize: valueChunkSize,
-      //   valueChunkOverlap: valueChunkOverlap
-      // }
-      // console.log(data)
-//  const data ={
-//   uploadthing:base64Files,
-//     selected_optio:selectedOption,
-//     chunk_overlap:valueChunkOverlap,
-//     chunk_size:valueChunkSize
+      
+      const datas = {
+        ...values,
+        selected_option:selectedOption,
+        specific_chunk:selectedOption==="Document Specific Chunking" ? selectedSpecific: "",
+        file: base64Files,
+        chunk_size: valueChunkSize,
+        chunk_overlap: valueChunkOverlap
+      }
 
-//  }
-//  console.log(data)
+    
       // CALLL API
-      // const res = await fetch("http://localhost:5000/chunk", {
+      //       {'file':base64Files,
+      //         'selected_option':selectedOption,
+      //         'chunk_overlap':100,
+      //         'chunk_size':300
+      // }
 
-      //     method: "POST",
-      //   body:data
-      //   })
-      //   console.log(res)
-
-      const res = await fetch("http://localhost:5000/chunk", {
-        method: "POST",
-        headers: {
-          'content-type': 'application/json'
-        },
-        body: JSON.stringify({'file':base64Files,
-                              'selected_option':selectedOption,
-                              'chunk_overlap':100,
-                              'chunk_size':500
-        })
-      })
-
-const data = await res.json();
-if (data.error) {
-  alert(data.error);
-} else {
-  console.log(data.chunks)
-}
-      // const data = await res.json();
+  //     const res = await fetch("http://localhost:5000/chunk", {
+  //       method: "POST",
+  // headers: {
+  //         'content-type': 'application/json'
+  //       },
+       
+  //        body: JSON.stringify(data)
         
+  //     })
+
+  //     const datas = await res.json();
+
+  //     console.log(datas)
+
+  // data={
+  //   chunk:[
+
+  //   ]
+  // }
+  const res = await axios.post('http://localhost:5000/chunk', datas )
+   
+
+  handleDataFromChild(res.data)
+  console.log(res.data.chunks)
+      
+
       toast.success("Chunking Successfully")
     } catch (error: any) {
+      setLoading(false)
       console.log("Fail to upload file", error)
       toast.error("Chunking Error")
     }
 
   };
 
-  //test result
-
+ 
+   
 
   return (
     <div className=" flex flex-col   w-full ml-4     ">
-      <Create saveButtonProps={saveButtonProps} title={<p className=" font-mono font-light">Enter your file...</p>} goBack={null} 
+      <Create   saveButtonProps={saveButtonProps} title={<p className=" font-mono font-light">Enter your file...</p>} goBack={null}
       // footerButtons={({ }) => (
 
       //   <div className=" w-[420px] ">
-          
+
       //     <button  className=" w-full m-4 p-2 rounded-lg border-2 bg-main-grey  border-black">Submit</button>
 
       //   </div>
       // )} 
       >
-        <Form {...formProps} onFinish={handleOnFinish} layout="vertical" className=" " >
-
-
-
-          {/* <div className="flex items-center justify-center w-full">
-            <label htmlFor="dropzone-file" className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
-              <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                <svg className="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
-                  <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2" />
-                </svg>
-                <p className="mb-2 text-sm text-gray-500 dark:text-gray-400"><span className="font-semibold">Click to upload</span> or drag and drop</p>
-                <p className="text-xs text-gray-500 dark:text-gray-400">TXT, DOCX, PDF </p>
-              </div>
-              <input id="dropzone-file" accept=".pdf,.docx" type="file" className=" hidden" onChange={handleFileUpload} />
-            </label>
-          </div> */}
-
+        <Form   {...formProps} onFinish={handleOnFinish} layout="vertical" className=" " >
+        
           <Form.Item
             name="uploadthing"
             valuePropName="fileList"
@@ -193,11 +178,8 @@ if (data.error) {
               <p className="ant-upload-text">Drag & drop a file in this area</p>
             </Upload.Dragger>
           </Form.Item>
-          <Form.Item label="Text" className="mt-3">
-
-            
-          </Form.Item>
-          <Form.Item label="Select Option" required>
+          
+          <Form.Item className="mt-4" label="Select method RAG" required>
             <Select
               placeholder="Select an option"
               value={selectedOption}
@@ -210,12 +192,30 @@ if (data.error) {
               ))}
             </Select>
           </Form.Item>
+          {selectedOption ==="Document Specific Chunking" && ( // Conditionally render specific options
+            <Form.Item label="Select Document" required>
+              <Select
+                placeholder="Select an option"
+                value={selectedSpecific}
+                onChange={setSelectedSpecific}
+                // disabled={selectedOption === 'Document Specific Chunking'} // Disable when specific chunking
+              >
+                {
+                  specificData.map((option) => (
+                    <Select.Option key={option.name} value={option.name}>
+                      {option.name}
+                    </Select.Option>
+                  )
+                )}
+              </Select>
+            </Form.Item>
+          )}
           <Form.Item label="Select Chunk Size">
             <Row>
               <Col span={12}>
                 <Slider
                   min={1}
-                  max={1000}
+                  max={2000}
                   onChange={onChangeChunkSize}
                   value={typeof valueChunkSize === 'number' ? valueChunkSize : 0}
                 // disabled={
@@ -228,13 +228,13 @@ if (data.error) {
               <Col span={4}>
                 <InputNumber
                   min={1}
-                  max={1000}
+                  max={2000}
                   style={{ margin: '0 16px' }}
                   value={valueChunkSize}
                   onChange={onChangeChunkSize}
-                  disabled={
-                    selectedOption === 'Document Specific Chunking'
-                  }
+                  // disabled={
+                  //   selectedOption === 'Document Specific Chunking'
+                  // }
                 />
               </Col>
             </Row>
@@ -244,7 +244,7 @@ if (data.error) {
               <Col span={12}>
                 <Slider
                   min={1}
-                  max={1000}
+                  max={2000}
                   onChange={onChangeChunkOverlap}
                   value={typeof valueChunkOverlap === 'number' ? valueChunkOverlap : 0}
                 />
@@ -252,7 +252,7 @@ if (data.error) {
               <Col span={4}>
                 <InputNumber
                   min={1}
-                  max={1000}
+                  max={2000}
                   style={{ margin: '0 16px' }}
                   value={valueChunkOverlap}
                   onChange={onChangeChunkOverlap}
@@ -271,4 +271,4 @@ if (data.error) {
   )
 }
 
-export default UploadFile
+export default UploadForm

@@ -1,10 +1,11 @@
 import os
-import base64
+
 import tempfile
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-from chunking.chunker import CharacterChunking, RecursiveCharacterChunking, DocumentSpecificChunkingMarkdown, \
-                            DocumentSpecificChunkingPython, DocumentSpecificChunkingJS, DocumentSpecificChunkingPDF
+from chunking.chunker import CharacterChunking, RecursiveCharacterChunking,\
+                            DocumentSpecificChunking, SemanticChunking
+from chunking.file_handler import FileHandler
 import fitz
 from werkzeug.utils import secure_filename
 from docx import Document
@@ -12,66 +13,64 @@ from docx import Document
 app = Flask(__name__)
 CORS(app, resources={r"/chunk": {"origins": "http://localhost:3000"}})
 app.config['UPLOAD_FOLDER'] = ""
-def read_docx(file_path):
-    doc = Document(file_path)
-    full_text = []
-    for para in doc.paragraphs:
-        full_text.append(para.text)
-    return '\n'.join(full_text)
 
-def read_pdf(file_path):
-    doc = fitz.open(file_path)
-    text = ""
-    for page_num in range(doc.page_count):
-        page = doc.load_page(page_num)
-        text += page.get_text()
-    return text
 
 @app.route('/chunk', methods=['POST'])
 def chunk_endpoint():
+    # Get data
     data = request.get_json()
-    # print(data.keys())
     file_data = data.get('file', '')[0]['base64String']
     chunk_size = data.get('chunk_size', 1000)
     chunk_overlap = data.get('chunk_overlap', 200)
-    selected_option = data.get('selected_option', 'chunks')
+    selected_option = data.get('selected_option', '')
+    sub_selected_option = data.get('sub_selected_option', '')
 
     if not file_data:
         return jsonify({'error': 'No file data provided'}), 400
 
     # Decode the base64 string and save it as a temporary file
-    file_content = base64.b64decode(file_data.split(",")[1])
+    filehandler = FileHandler(upload_folder=app.config['UPLOAD_FOLDER'])
+    
+    file_content = filehandler.decode_base64string(file_data)
     file_ext = '.pdf' if 'pdf' in file_data.split(",")[0] else '.docx'
     
     with tempfile.NamedTemporaryFile(delete=False, suffix=file_ext) as temp_file:
         temp_file.write(file_content)
         temp_file_path = temp_file.name
-    # print(chunk_size, chunk_overlap)
+    
     if file_ext == '.pdf':
-        text = read_pdf(temp_file_path)
+        text = filehandler.read_pdf(temp_file_path)
     elif file_ext == '.docx':
-        text = read_docx(temp_file_path)
+        text = filehandler.read_docx(temp_file_path)
     else:
         return jsonify({'error': 'Unsupported file type'}), 400
 
-
-    print(selected_option)
+    # Call function for each option
     if selected_option == "Character Chunking":
-        return CharacterChunking(text, chunk_size, chunk_overlap)
-    elif selected_option == "Recursion Character Chunking":
-        return RecursiveCharacterChunking(text, chunk_size, chunk_overlap)
-    elif selected_option == "Document Specific Chunking - Markdown":
-        return DocumentSpecificChunkingMarkdown(text, chunk_size, chunk_overlap)
-    elif selected_option == "Document Specific Chunking - Python":
-        return DocumentSpecificChunkingPython(text, chunk_size, chunk_overlap)
-    elif selected_option == "Document Specific Chunking - JS":
-        return DocumentSpecificChunkingJS(text, chunk_size, chunk_overlap)
+        characterchunking = CharacterChunking(chunk_size, chunk_overlap)
+        return characterchunking.split_text(text)
+    
+    elif selected_option == "Recursive Character Chunking" :
+        recursive = RecursiveCharacterChunking(chunk_size, chunk_overlap)
+        if sub_selected_option == "":
+            return recursive.split_text(text)
+        elif sub_selected_option == "markdown":
+            return recursive.split_markdown(text)
+        elif sub_selected_option == "python":
+            return recursive.split_python(text)
+        elif sub_selected_option == "js":
+            return recursive.split_js(text)
+        
     elif selected_option == "Document Specific Chunking":
-        return DocumentSpecificChunkingPDF(temp_file_path)
+        document_chunking = DocumentSpecificChunking(chunk_size, chunk_overlap)
+        if file_ext == '.pdf':
+            return document_chunking.chunking_pdf(temp_file_path)
+        elif file_ext == '.docx':
+            return jsonify({"chunks":["Doc Document"]})
     else:
         return jsonify({"chunks":[]})
-
+   
     os.remove(temp_file_path)
-
+    
 if __name__=="__main__": 
     app.run(debug=True)

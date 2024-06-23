@@ -1,8 +1,4 @@
-import DataChunked from "@components/data-chunked";
 
-import { getDataChunk } from "../../../action/getDataChunk";
-import { useState } from "react";
-import UploadForm from "@components/upload/upload-form";
 import Parent from "@components/Parent";
 
 
@@ -10,15 +6,12 @@ import Parent from "@components/Parent";
 const UploadPage = async () => {
   //  const data = getDataChunk()
   // console.log(data)
-  const getData = (data: any) => {
-
-
-  }
+  
   return (
 
-    <main className="bg-main-grey flex flex-col min-h-screen text-black">
+    <main className="  bg-[#292329] flex flex-col min-h-screen text-black">
      <Parent/>
-    </main>
+    </main> 
 
 
   )

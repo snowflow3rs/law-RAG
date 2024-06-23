@@ -8,21 +8,21 @@ import type { InputNumberProps } from "antd";
 import { Col, InputNumber, Row, Slider } from "antd";
 import { file2Base64 } from "@refinedev/core";
 import { toast } from "react-hot-toast";
-import { dataChunking, specificData } from "../../../constant/constant";
 
-
+// ////
 import "@react-pdf-viewer/core/lib/styles/index.css";
 import "@react-pdf-viewer/default-layout/lib/styles/index.css";
+import { dataChunking, specificData } from "../../constant/constant";
+interface TestProps {
+    handleDataFromChild?: any;
+    handelFileFromChild?: any;
+  }
 
-interface UploadFormProps {
-  handleDataFromChild?: any;
-  handelFileFromChild?: any;
-}
-
-const UploadForm: React.FC<UploadFormProps> = ({
-  handelFileFromChild,
-  handleDataFromChild,
-}) => {
+const TestFile:React.FC<TestProps> = ({
+    handelFileFromChild,
+    handleDataFromChild,
+  }) => {
+  const [fileUrl, setFileUrl] = useState<string | null>(null);
   const [valueChunkSize, setValueChunkSize] = useState<number>(1);
   const [valueChunkOverlap, setValueChunkOverlap] = useState<number>(1);
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
@@ -30,8 +30,20 @@ const UploadForm: React.FC<UploadFormProps> = ({
   const { formProps, saveButtonProps, onFinish } = useForm();
   const [loading, setLoading] = useState(false);
 
-  const MAX_TEXT_LENGTH = 100000;
 
+  const handleUpload = (info: any) => {
+    if (info.file.status === 'done') {
+      const file = info.file.originFileObj;
+      if (file && file.type === 'application/pdf') {
+        const url = URL.createObjectURL(file);
+        handelFileFromChild(url);
+      } else {
+        message.error('Please upload a PDF file.');
+      }
+    } else if (info.file.status === 'error') {
+      message.error(`${info.file.name} file upload failed.`);
+    }
+  };
   // handle  value range
   const onChangeChunkSize: InputNumberProps["onChange"] = (newValue) => {
     setValueChunkSize(newValue as number);
@@ -73,7 +85,6 @@ const UploadForm: React.FC<UploadFormProps> = ({
         chunk_overlap: valueChunkOverlap,
       };
 
-       console.log(datas);
       const res = await axios.post("http://localhost:5000/chunk", datas);
 
       handleDataFromChild(res.data);
@@ -85,55 +96,42 @@ const UploadForm: React.FC<UploadFormProps> = ({
       toast.error("Chunking Error");
     }
   };
-
-  const handleUpload = (info: any) => {
-    const file = info.file.originFileObj;
-    if (file && file.type === "application/pdf") {
-      const url = URL.createObjectURL(file);
-
-      handelFileFromChild(url);
-    }
-  };
-
- 
-
+  
   return (
-    <div className=" flex flex-col   w-full ml-4     ">
-      <Create
-        saveButtonProps={saveButtonProps}
-        title={<p className=" font-mono font-light">Enter your file...</p>}
-        goBack={null}
-        // footerButtons={({ }) => (
+    <Create saveButtonProps={saveButtonProps}
+    title={<p className=" font-mono font-light">Enter your file...</p>}
+    goBack={null} >
 
-        //   <div className=" w-[420px] ">
-
-        //     <button  className=" w-full m-4 p-2 rounded-lg border-2 bg-main-grey  border-black">Submit</button>
-
-        //   </div>
-        // )}
+<Form
+ {...formProps}
+ onFinish={handleOnFinish}
+ layout="vertical"
+   
+     
+    >
+     
+      <Form.Item
+        name="uploadthing"
+        valuePropName="fileList"
+        getValueFromEvent={getValueFromEvent}
+        rules={[{ required: true, message: 'Please upload a file!' }]}
       >
-        <Form
-          {...formProps}
-          onFinish={handleOnFinish}
-          layout="vertical"
-          className=" "
+        <Upload.Dragger
+           listType="picture"
+           
+         
+          customRequest={({ file, onSuccess }) => {
+            setTimeout(() => {
+              onSuccess && onSuccess("ok");
+            }, 0);
+          }}
+          onChange={handleUpload}
         >
-          <Form.Item
-            name="uploadthing"
-            valuePropName="fileList"
-            getValueFromEvent={getValueFromEvent}
-            rules={[{ required: true, message: "Please upload a file!" }]}
-          >
-            <Upload.Dragger
-              listType="picture"
-              
-              onChange={handleUpload}
-            >
-              <p className="ant-upload-text">Drag & drop a file in this area</p>
-            </Upload.Dragger>
-          </Form.Item>
-
-          <Form.Item className="mt-4" label="Select method RAG" required>
+          <p className="ant-upload-text">Drag & drop a file in this area</p>
+         
+        </Upload.Dragger>
+      </Form.Item>
+      <Form.Item className="mt-4" label="Select method RAG" required>
             <Select
               placeholder="Select an option"
               value={selectedOption}
@@ -217,35 +215,17 @@ const UploadForm: React.FC<UploadFormProps> = ({
               </Col>
             </Row>
           </Form.Item>
-        </Form>
-      </Create>
-    </div>
+      {/* {fileUrl && (
+        <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.js">
+          <div style={{ height: '750px', marginTop: '20px' }}>
+            <Viewer fileUrl={fileUrl} plugins={[defaultLayoutPluginInstance]} />
+          </div>
+        </Worker>
+      )} */}
+    
+    </Form>
+    </Create>
   );
 };
 
-export default UploadForm;
-
-// handle file upload
-// const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-
-//   const file = e.target.files?.[0]
-//   setFile(file)
-//   if (file) {
-//     const reader = new FileReader();
-//     reader.onload = function (e: any) {
-//       setText(e.target.result);
-//     };
-//     reader.readAsText(file);
-//   }
-// };
-
-// const handleTextChange = (event: any) => {
-
-//   let newText = event.target.value;
-//   if (newText.length > MAX_TEXT_LENGTH) {
-//     alert(`Error: Text cannot be longer than ${MAX_TEXT_LENGTH} characters. It will be trimmed to fit the limit.`);
-//     newText = newText.substring(0, MAX_TEXT_LENGTH);
-//   }
-//   setText(newText);
-
-// };
+export default TestFile;

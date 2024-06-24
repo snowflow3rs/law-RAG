@@ -80,7 +80,7 @@ def chunk_endpoint():
         text = filehandler.read_docx(temp_file_path)
     else:
         return jsonify({'error': 'Unsupported file type'}), 400
-    if selected_option == 'Character Splitting':
+    if selected_option == 'Character Chunking':
         CS = CharacterSplitting(chunk_size, chunk_overlap)
         if sub_selected_option == "Manually":
             start_time = time.time()

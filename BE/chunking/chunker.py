@@ -1,7 +1,7 @@
 from flask import request, jsonify
 from langchain_text_splitters import CharacterTextSplitter, RecursiveCharacterTextSplitter, MarkdownTextSplitter
 from langchain_text_splitters import PythonCodeTextSplitter, RecursiveCharacterTextSplitter, Language
-from .parser import DocumentsParser
+# from .parser import DocumentsParser
     
 class CharacterChunking:
     def __init__(self, chunk_size=100, chunk_overlap=10):
@@ -71,7 +71,7 @@ class RecursiveCharacterChunking:
                         'id':i})
         return jsonify({'chunks': chunks})
 
-class DocumentSpecificChunking:
+# class DocumentSpecificChunking:
     def __init__(self,  chunk_size, chunk_overlap):
         self.recursion_chunking = RecursiveCharacterChunking(chunk_size, chunk_overlap)
         self.parser = DocumentsParser()

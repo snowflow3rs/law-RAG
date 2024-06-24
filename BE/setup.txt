@@ -1,0 +1,5 @@
+flask
+python-docx
+flask_cors
+unstructured
+time

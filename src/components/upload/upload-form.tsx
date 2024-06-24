@@ -75,7 +75,7 @@ const UploadForm: React.FC<UploadFormProps> = ({
 
        console.log(datas);
       const res = await axios.post("http://localhost:5000/chunk", datas);
-
+ console.log(res)
       handleDataFromChild(res.data);
 
       toast.success("Chunking Successfully");

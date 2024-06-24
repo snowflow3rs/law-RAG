@@ -9,7 +9,7 @@ const UploadPage = async () => {
   
   return (
 
-    <main className="  bg-[#292329] flex flex-col min-h-screen text-black">
+    <main className="   bg-main-grey flex flex-col min-h-screen text-black">
      <Parent/>
     </main> 
 

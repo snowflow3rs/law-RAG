@@ -16,14 +16,20 @@ const data =[
 
 ]
 //
+//  raw data 1
+// const data = [
+
+//   { "ID": 0, "text": "\u0110\u00e2y l\u00e0 d\u00f2ng ch\u1eef \u0111\u1ec3 th\u1eed nghi\u1ec7m. H\u00f4m ", "type": "text" },
+//   { "ID": 1, "text": "\u00f4m nay tr\u1eddi th\u1eadt \u0111\u1eb9p!", "type": "text" }]
+
 const DataChunked: React.FC<DataChunkedProps> = ({ sharedState }) => {
   return (
-    <div className="mt-4 w-full">
+    <div className="mt-4 w-full ">
       {/* <TestFile/> */}
       {sharedState?.chunks.map((item: any, i: number) => (
         <div
           key={i}
-          className=" my-6 flex flex-col items-start  bg-gradient-to-br from-main-pink  border-2 border-black p-2 rounded-md w-[100%] shadow-[0_4px_1px_1px_rgba(0,0,0,0.3)]"
+          className=" my-6 flex mr-16 flex-col items-start  bg-gradient-to-br from-main-pink  border-2 border-black p-2 rounded-md w-[100%] shadow-[0_4px_1px_1px_rgba(0,0,0,0.3)]"
         >
           {item.type === "Table" ? (
             <div dangerouslySetInnerHTML={{ __html: item.text }} />

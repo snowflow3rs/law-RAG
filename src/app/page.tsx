@@ -14,7 +14,7 @@ export default function IndexPage() {
       <Authenticated key="home-page">
         <NavigateToResource />
         <div className="  min-h-screen relative   bg-[#171717] flex ">
-        <div className="  sticky z-2 top-0 left-0 max-h-screen flex flex-col w-[260px]   ">
+        <div className="  sticky z-2 top-0 left-0 max-h-screen flex-1   ">
         <SideBar/>
         </div>
           <MainPrompt />

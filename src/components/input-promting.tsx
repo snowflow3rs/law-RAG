@@ -25,7 +25,7 @@ const InputPrompt = () => {
 
   return (
     <>
-      <div className="text-white w-full bg-[#212121]">
+      <div className="text-white w-full h-[84px] bg-[#212121]">
         <Form {...formProps} layout="vertical" className="flex items-center py-2 justify-center">
         <textarea
             ref={textareaRef}

@@ -1,10 +1,10 @@
 "use client";
 import React, { useState } from "react";
-// import UploadForm from "./upload/upload-form";
 import DataChunked from "./data-chunked";
 import { Viewer, Worker } from "@react-pdf-viewer/core";
 import { defaultLayoutPlugin } from "@react-pdf-viewer/default-layout";
 import "@react-pdf-viewer/core/lib/styles/index.css";
+// import {  } from "@react-pdf-viewer/search";
 import "@react-pdf-viewer/default-layout/lib/styles/index.css";
 import UploadForm from "./upload/upload-form";
 const Parent = () => {
@@ -20,7 +20,7 @@ const Parent = () => {
   return (
     <div className="  ">
       <div className="grid grid-cols-3 gap-4">
-        <div className=" bg-main-grey  min-h-screen">
+        <div className=" bg-main-grey  sticky left-0 top-0 z-20  max-h-screen">
           <p className="m-4 text-[4rem] font-bold font-mono"> RAGA </p>
           <p className="ml-4 text-[1.5rem] font-normal font-mono">
             Explore chunking
@@ -48,7 +48,6 @@ const Parent = () => {
                 </Worker>
               )}
             </div>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. A officiis laudantium commodi, omnis vero, nihil rem amet sequi ducimus doloremque ea atque consequatur odit assumenda, iusto non voluptatum! Voluptatem, excepturi!
 
           </div>
           {/* <div className="   border-2 border-black mt-16 ml-12 mr-8 rounded-md p-4 bg-white/30 backdrop-blur-md ">

@@ -9,6 +9,7 @@ import { dataProvider } from "@providers/data-provider";
 import "@styles/global.css";
 import { ToastProvider } from "../../modal/toast-provider";
 import ScrollToTopBtn from "@components/scroll-top-btn";
+import TestSticky from "@components/test";
 
 export const metadata: Metadata = {
   title: "Refine",
@@ -36,7 +37,7 @@ export default function RootLayout({
 
               dataProvider={dataProvider}
               resources={[
-             {
+                {
 
                   name: "upload",
                   list: "/upload",
@@ -45,7 +46,16 @@ export default function RootLayout({
                   // show: "/blog-posts/show/:id",
 
                 },
-               
+                {
+
+                  name: "homepage",
+                  list: "/",
+                  // create: "/blog-posts/create",
+                  // edit: "/blog-posts/edit/:id",
+                  // show: "/blog-posts/show/:id",
+
+                },
+
               ]}
               options={{
                 syncWithLocation: true,
@@ -56,8 +66,12 @@ export default function RootLayout({
             >
 
               <ToastProvider />
-              {children}
-                <ScrollToTopBtn/>
+              <div className=" h-full  relative">
+
+                {children}
+              </div>
+
+              <ScrollToTopBtn />
               <RefineKbar />
             </Refine>
 

@@ -2,8 +2,8 @@
 import { useState } from "react";
 
 import axios from "axios";
-import { Create, useForm, getValueFromEvent } from "@refinedev/antd";
-import { Form, Select, Upload, message } from "antd";
+import { Create, useForm, getValueFromEvent, SaveButton } from "@refinedev/antd";
+import { Button, Form, Select, Upload, message } from "antd";
 import type { InputNumberProps } from "antd";
 import { Col, InputNumber, Row, Slider } from "antd";
 import { file2Base64 } from "@refinedev/core";
@@ -13,6 +13,7 @@ import { dataChunking, specificData } from "../../../constant/constant";
 
 import "@react-pdf-viewer/core/lib/styles/index.css";
 import "@react-pdf-viewer/default-layout/lib/styles/index.css";
+import { AiOutlineArrowRight } from "react-icons/ai";
 
 interface UploadFormProps {
   handleDataFromChild?: any;
@@ -100,18 +101,21 @@ const UploadForm: React.FC<UploadFormProps> = ({
   return (
     <div className=" flex flex-col   w-full ml-4     ">
       <Create
+      isLoading={loading}
         saveButtonProps={saveButtonProps}
         title={<p className=" font-mono font-light">Enter your file...</p>}
         goBack={null}
-        // footerButtons={({ }) => (
-
-        //   <div className=" w-[420px] ">
-
-        //     <button  className=" w-full m-4 p-2 rounded-lg border-2 bg-main-grey  border-black">Submit</button>
-
-        //   </div>
-        // )}
+        footerButtons={({saveButtonProps }) => (
+        <>
+          <Button className=" w-[120px] h-10 bg-white shadow-[4px_4px_#323232] text-[17px] font-semibold text-[#323232] cursor-pointer rounded-[5px] border-2 border-solid border-[#323232)] active:shadow-[0px_0px_#323232] active:translate-x-[3px] active:translate-y-[3px]"  {...saveButtonProps}>
+            Let`s go  <AiOutlineArrowRight/></Button>
+          </>
+        )}
       >
+
+
+
+
         <Form
           {...formProps}
           onFinish={handleOnFinish}
@@ -147,7 +151,7 @@ const UploadForm: React.FC<UploadFormProps> = ({
             </Select>
           </Form.Item>
           {selectedOption === "Document Specific Chunking" && ( // Conditionally render specific options
-            <Form.Item label="Select Document" required>
+            <Form.Item label="Select Chunking Type" required>
               <Select
                 placeholder="Select an option"
                 value={selectedSpecific}

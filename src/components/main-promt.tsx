@@ -12,18 +12,18 @@ import { Empty } from './empty';
 const MainPrompt: React.FC = () => {
 
   const { formProps, } = useForm();
-  const [messages, setMessages] = useState<any>([])
+  const [ads, setMessages] = useState<any>([])
 
   const [text, setText] = useState()
 
   const textareaRef = useRef(null);
-  //  const messages = [
-  //   { role: "user", text: "Hello babe can u marry me" },
-  //   { role: "bot", text: "Of course! What kind of story would you like to hear? Adventure, fantasy, mystery, or something else?" },
-  //   { role: "user", text: "Hello babe can u marry me" },
-  //   { role: "bot", text: "Of coursAdventure, fantike to hear? Adventd of se, fantasy, mystery, or something Of course! What kind of story would you like to hear? Adventure, fantasy, mystery, or something else?"},
-  //  ]
-  //  handle show typing text
+   const messages = [
+    { role: "user", text: "Hello babe can u marry me Hello babe can u marry meHello babe can u marry meHello babe can u marry me" },
+    { role: "bot", text: "Of course! What kind of story would you like to hear? Adventure, fantasy, mystery, or something else?Of course! What kind of story would you like to hear? Adventure, fantasy, mystery, or something else?Of course! What kind of story would you like to hear? Adventure, fantasy, mystery, or something else?Of course! What kind of story would you like to hear? Adventure, fantasy, mystery, or something else?" },
+    { role: "user", text: "Hello babe can u marry me" },
+    { role: "bot", text: "Of coursAdventure, fantike to hear? Adventd of se, fantasy, mystery, or something Of course! What kind of story would you like to hear? Adventure, fantasy, mystery, or something else?"},
+   ]
+   
 
 
 
@@ -73,7 +73,7 @@ const MainPrompt: React.FC = () => {
       <div className='flex-1 flex-col'>
         <div className='sticky right-0 top-0 z-2 w-full bg-[#212121] h-14 p-2'>
           <div className='flex items-center justify-between px-4'>
-            <div className='font-mono text-2xl text-[#4e4646] font-semibold'>RAG</div>
+            <div className='font-mono text-2xl  text-gray-400 font-semibold'>RAG</div>
             <div className='bg-red-500 h-10 w-10 rounded-full flex items-center justify-center'>
               <AiOutlineUser className='text-white' />
             </div>
@@ -96,7 +96,7 @@ const MainPrompt: React.FC = () => {
                         <AiOutlineUser className='h-4 w-4 text-white' />
                       </div>
                     )}
-                    <div className={`text-white  px-5 py-2.5 ${message.role === 'user' ? 'ml-auto bg-[#2F2F2F]  rounded-3xl' : 'mr-auto '}`}>
+                    <div className={`text-white leading-8  ${message.role === 'user' ? 'ml-auto bg-[#2F2F2F]  px-5 py-2.5 rounded-3xl':"" }`}>
                       <p>{message.text}</p>
 
                     </div>

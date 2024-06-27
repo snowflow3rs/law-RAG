@@ -5,7 +5,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useForm } from "@refinedev/antd";
 import { Form, message } from "antd";
 import { AiOutlineArrowUp } from "react-icons/ai";
-
+import Typist from 'react-typist';
 import axios from 'axios';
 import { Empty } from './empty';
 
@@ -97,7 +97,7 @@ const MainPrompt: React.FC = () => {
                       </div>
                     )}
                     <div className={`text-white leading-8  ${message.role === 'user' ? 'ml-auto bg-[#2F2F2F]  px-5 py-2.5 rounded-3xl':"" }`}>
-                      <p>{message.text}</p>
+                     {message.role === "bot"?<Typist avgTypingDelay={10}>{message.text}</Typist>:<p>{message.text}</p>}
 
                     </div>
                   </div>
@@ -120,7 +120,7 @@ const MainPrompt: React.FC = () => {
               onInput={handleInput}
               style={{ maxHeight: `${5 * 24}px` }}
             />
-            <button onClick={handleSubmit} className=' hover:bg-slate-300 rounded-full h-10 w-10  flex items-center justify-center p-2'><AiOutlineArrowUp /></button>
+            <button onClick={handleSubmit} className=' hover:bg-slate-300 rounded-full h-10 w-10  flex items-center justify-center p-2'><AiOutlineArrowUp  className='text-black'/></button>
           </Form>
         </div>
       </div>

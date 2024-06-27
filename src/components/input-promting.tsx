@@ -1,15 +1,25 @@
 "use client";
 import React, { useEffect, useRef, useState } from 'react';
 import { useForm } from "@refinedev/antd";
-import { Button, Form, Input } from "antd";
-import TextArea from "antd/lib/input/TextArea";
+import {  Form } from "antd";
 import { AiOutlineArrowUp } from "react-icons/ai";
 
-const InputPrompt = () => {
-  const { formProps, saveButtonProps, queryResult } = useForm();
+import axios from 'axios';
+
+
+const InputPrompt:React.FC = (handleMess:any) => {
+  const { formProps,  } = useForm();
+   const [messages,setMessages] = useState<any>([])
+ 
+   const[text,setText]= useState()
+     console.log(messages)
   const textareaRef = useRef(null);
 
+
+  //  console.log(messages)
   const handleInput = (event:any) => {
+     const value = event.target.value
+      setText(value)
     const textarea = event.target;
     textarea.style.height = 'auto'; 
     textarea.style.height = `${textarea.scrollHeight}px`; 
@@ -22,10 +32,32 @@ const InputPrompt = () => {
       textarea.style.overflowY = 'hidden'; 
     }
   };
+  const handleSubmit = async(e:any)=>{
+   try {
+    e.preventDefault()
+    const userMessages ={
+          
+          text:text,
+          role:"user",
+          refer:[]
+    }
+    
+     const newMessage =[...messages, userMessages] 
+      console.log(newMessage)
+      const res = await axios.post("http://127.0.0.1:8000/api", userMessages);
+      console.log(res)
+      handleMess(res.data)
+
+          
+          setMessages((curr:any)=>[...curr,userMessages,res.data,])
+    } catch (error) {  
+      throw new Error( "Fail to upload data")
+    }
+    }
 
   return (
     <>
-      <div className="text-white w-full h-[84px] bg-[#212121]">
+      <div className="text-white w-full  bg-[#212121]">
         <Form {...formProps} layout="vertical" className="flex items-center py-2 justify-center">
         <textarea
             ref={textareaRef}
@@ -35,6 +67,7 @@ const InputPrompt = () => {
             onInput={handleInput}
             style={{ maxHeight: `${5 * 24}px` }} 
           />
+          <button onClick={handleSubmit} className=' hover:bg-slate-300 rounded-full h-10 w-10  flex items-center justify-center p-2'><AiOutlineArrowUp/></button>
         </Form>
       </div>
     </>

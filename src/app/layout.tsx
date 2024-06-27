@@ -71,7 +71,7 @@ export default function RootLayout({
                 {children}
               </div>
 
-              <ScrollToTopBtn />
+              
               <RefineKbar />
             </Refine>
 

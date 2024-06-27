@@ -6,8 +6,8 @@ const SideBar = () => {
     return (
         <div className=" w-[260px] text-[#ECECEC] flex flex-col h-full ">
 
-            <div className='px-3 py-3 flex-1'>
-                <div className='  h-14 text-white flex justify-between items-center'>
+            <div className='px-3  flex-1'>
+                <div className='  h-14 text-[#ECECEC] flex justify-between items-center'>
                     <div>
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" className="icon-xl-heavy"><path fill="currentColor" fillRule="evenodd" d="M8.857 3h6.286c1.084 0 1.958 0 2.666.058.729.06 1.369.185 1.961.487a5 5 0 0 1 2.185 2.185c.302.592.428 1.233.487 1.961.058.708.058 1.582.058 2.666v3.286c0 1.084 0 1.958-.058 2.666-.06.729-.185 1.369-.487 1.961a5 5 0 0 1-2.185 2.185c-.592.302-1.232.428-1.961.487C17.1 21 16.227 21 15.143 21H8.857c-1.084 0-1.958 0-2.666-.058-.728-.06-1.369-.185-1.96-.487a5 5 0 0 1-2.186-2.185c-.302-.592-.428-1.232-.487-1.961C1.5 15.6 1.5 14.727 1.5 13.643v-3.286c0-1.084 0-1.958.058-2.666.06-.728.185-1.369.487-1.96A5 5 0 0 1 4.23 3.544c.592-.302 1.233-.428 1.961-.487C6.9 3 7.773 3 8.857 3M6.354 5.051c-.605.05-.953.142-1.216.276a3 3 0 0 0-1.311 1.311c-.134.263-.226.611-.276 1.216-.05.617-.051 1.41-.051 2.546v3.2c0 1.137 0 1.929.051 2.546.05.605.142.953.276 1.216a3 3 0 0 0 1.311 1.311c.263.134.611.226 1.216.276.617.05 1.41.051 2.546.051h.6V5h-.6c-1.137 0-1.929 0-2.546.051M11.5 5v14h3.6c1.137 0 1.929 0 2.546-.051.605-.05.953-.142 1.216-.276a3 3 0 0 0 1.311-1.311c.134-.263.226-.611.276-1.216.05-.617.051-1.41.051-2.546v-3.2c0-1.137 0-1.929-.051-2.546-.05-.605-.142-.953-.276-1.216a3 3 0 0 0-1.311-1.311c-.263-.134-.611-.226-1.216-.276C17.029 5.001 16.236 5 15.1 5zM5 8.5a1 1 0 0 1 1-1h1a1 1 0 1 1 0 2H6a1 1 0 0 1-1-1M5 12a1 1 0 0 1 1-1h1a1 1 0 1 1 0 2H6a1 1 0 0 1-1-1" clipRule="evenodd"></path></svg></div>                    <div>
 
@@ -20,23 +20,30 @@ const SideBar = () => {
                     <div className='   my-1 text-sm p-2 gap-2 hover:bg-[#212121] rounded-lg '>Hello World!1</div>
                     <div className='  my-1 text-sm p-2 gap-2 hover:bg-[#212121] rounded-lg'> Hello World!</div>
                     <div className='  my-1 text-sm p-2 gap-2 hover:bg-[#212121] rounded-lg'> Hello World!</div>
+                    <div className='   my-1 text-sm p-2 gap-2 hover:bg-[#212121] rounded-lg '>Hello World!1</div>
                     <div className='  my-1 text-sm p-2 gap-2 hover:bg-[#212121] rounded-lg'> Hello World!</div>
-                    <div className='   my-1 text-sm p-2 gap-2 hover:bg-[#212121] rounded-lg '>Hello World!</div>
-                    <div className='  my-1 text-sm p-2 gap-2 hover:bg-[#212121] rounded-lg'> Hello World!</div>
-                    <div className='   my-1 text-sm p-2 gap-2 hover:bg-[#212121] rounded-lg '>Hello World!</div>
-                    <div className='  my-1 text-sm p-2 gap-2 hover:bg-[#212121] rounded-lg'> Hello World!</div>
-                    <div className='  my-1 text-sm p-2 gap-2 hover:bg-[#212121] rounded-lg'> Hello World!</div>
-                    <div className='  my-1 text-sm p-2 gap-2 hover:bg-[#212121] rounded-lg'> Hello World!</div>
-                    <div className='   my-1 text-sm p-2 gap-2 hover:bg-[#212121] rounded-lg '>Hello World!</div>
-                    <div className='  my-1 text-sm p-2 gap-2 hover:bg-[#212121] rounded-lg'> Hello World!9</div>
+
+
 
                 </div>
 
 
             </div>
             <div className=' px-3 h-[80px]'>
-                sadasdsa
-
+                <div className='flex items-center'>
+                    <div className=' rounded-full border-[#212121]'><svg xmlns="http://www.w3.org/2000/svg"
+                        width="24" height="24"
+                        fill="none" viewBox="0 0 24 24"
+                        className="icon-sm shrink-0">
+                        <path fill="currentColor"
+                            d="M6.394 4.444c.188-.592 1.024-.592 1.212 0C8.4 8.9 9.1 9.6 13.556 10.394c.592.188.592 1.024 0 1.212C9.1 12.4 8.4 13.1 7.606 17.556c-.188.592-1.024.592-1.212 0C5.6 13.1 4.9 12.4.444 11.606c-.592-.188-.592-1.024 0-1.212C4.9 9.6 5.6 8.9 6.394 4.444m8.716 9.841a.41.41 0 0 1 .78 0c.51 2.865.96 3.315 3.825 3.826.38.12.38.658 0 .778-2.865.511-3.315.961-3.826 3.826a.408.408 0 0 1-.778 0c-.511-2.865-.961-3.315-3.826-3.826a.408.408 0 0 1 0-.778c2.865-.511 3.315-.961 3.826-3.826Zm2.457-12.968a.454.454 0 0 1 .866 0C19 4.5 19.5 5 22.683 5.567a.454.454 0 0 1 0 .866C19.5 7 19 7.5 18.433 10.683a.454.454 0 0 1-.866 0C17 7.5 16.5 7 13.317 6.433a.454.454 0 0 1 0-.866C16.5 5 17 4.5 17.567 1.317">
+                        </path>
+                    </svg></div>
+                    <div className=' ml-1'>
+                        <p className='  text-xl font-semibold'>Upgrade plan</p>
+                        <p className=' text-sm'> Get GPT-4, DALL-E, and more</p>
+                    </div>
+                </div>
             </div>
 
 

@@ -13,11 +13,13 @@ export default function IndexPage() {
     <Suspense>
       <Authenticated key="home-page">
         <NavigateToResource />
-        <div className="  min-h-screen relative   bg-[#171717] flex ">
-        <div className="  sticky z-2 top-0 left-0 max-h-screen flex-1   ">
-        <SideBar/>
-        </div>
-          <MainPrompt />
+        <div className="   min-h-screen    bg-[#171717] flex ">
+          <div className="  fixed z-2 top-0 left-0  h-full    ">
+            <SideBar />
+          </div>
+          <div className="flex-1 ml-[260px] " >
+            <MainPrompt />
+          </div>
         </div>
       </Authenticated>
     </Suspense>
